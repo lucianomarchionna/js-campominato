@@ -4,14 +4,24 @@
 // L’utente non può inserire più volte lo stesso numero.
 // Se il numero è presente nella lista dei numeri generati, la partita termina, altrimenti si continua chiedendo all’utente un altro numero.
 // La partita termina quando il giocatore inserisce un numero “vietato” o raggiunge il numero massimo possibile di numeri consentiti.
-// Al termine della partita il software deve comunicare il punteggio, cioè il numero di volte che l’utente ha inserito un numero consentito.
-// function generateNumber() {
-//     for(var i = 0; i < 16; i++){
-//         numberRandom = Math.floor(Math.random() * (1 - 100) ) + 1;
-//     }
-// }
+// Al termine della partita il software deve comunicare il punteggio, cioè il numero di volte che l’utente ha inserito un numero consentito. 
+var number;
+var numbersRandom = [];
+var different = false
 
 for(var i = 0; i < 16; i++){
-    var numberRandom = Math.floor(Math.random() * 100) + 1;
-    console.log(numberRandom);
+    var number = Math.floor(Math.random() * 100) + 1;
+    different = true; 
+    for(var j=0; j<i; j++){
+        if(numbersRandom[j] == number){
+            different = false;
+        }
+    }
+    if(different){
+        numbersRandom[i] = number;
+    }
+    else{
+        i--;
+    }
 }
+console.log(numbersRandom);
