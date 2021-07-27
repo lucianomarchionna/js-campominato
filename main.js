@@ -5,23 +5,58 @@
 // Se il numero è presente nella lista dei numeri generati, la partita termina, altrimenti si continua chiedendo all’utente un altro numero.
 // La partita termina quando il giocatore inserisce un numero “vietato” o raggiunge il numero massimo possibile di numeri consentiti.
 // Al termine della partita il software deve comunicare il punteggio, cioè il numero di volte che l’utente ha inserito un numero consentito. 
-var number;
-var numbersRandom = [];
-var different = false
+var bomba;
+var bombe = [];
+var maxNumber = 100;
+var listaNumeri = [];
+var numeroUtente;
+var i = 0;
+var range = maxNumber - 16;
+var control = false;
+var controlloDuplicati=false;
 
-for(var i = 0; i < 16; i++){
-    var number = Math.floor(Math.random() * 100) + 1;
-    different = true; 
-    for(var j=0; j<i; j++){
-        if(numbersRandom[j] == number){
-            different = false;
-        }
-    }
-    if(different){
-        numbersRandom[i] = number;
-    }
-    else{
-        i--;
+while(bombe.length < 16){
+    bomba = numbersRandom(1, maxNumber);
+    if(bombe.includes(bomba) == false){
+        bombe.push(bomba);
     }
 }
-console.log(numbersRandom);
+console.log(bombe);
+while(listaNumeri.length < range && control == false){
+    do{
+        numeroUtente = parseInt(prompt("Inserisci un numero da 1 a 100:"));
+    }while(isNaN(numeroUtente)|| numeroUtente < 1 || numeroUtente > 100);
+
+    control = isInArray(bombe, numeroUtente);
+    controlloDuplicati = isInArray(listaNumeri, numeroUtente);
+
+    if(controlloDuplicati == true){
+        alert('Numero già inserito! Riprova.');
+    }else if(control == false){
+        listaNumeri.push(numeroUtente);
+    }else{
+        alert("BOOOM! Hai colpito una bomba, la tua partita è terminata. Hai totalizzato un punteggio di " + listaNumeri.length);
+    }
+    i++;
+}
+
+if(listaNumeri.length == range){
+    alert("COMPLIMENTI! HAI VINTO!!!");
+}
+
+console.log(listaNumeri);
+// funzione che genera numeri randomici delle bombe senza ripetizioni
+function numbersRandom(min, max){
+    return risultato = Math.floor(Math.random() * max - min + 1) + min; 
+}
+
+function isInArray(array, element) {
+    var result = false;
+    var i = 0;
+    while (i < array.length && result == false) {
+        if (element == array[i])
+            result = true;
+        i++;
+    }
+    return result;
+}
