@@ -22,29 +22,30 @@ while(bombe.length < 16){
     }
 }
 console.log(bombe);
-while(listaNumeri.length < range && control == false){
-    do{
-        numeroUtente = parseInt(prompt("Inserisci un numero da 1 a 100:"));
-    }while(isNaN(numeroUtente)|| numeroUtente < 1 || numeroUtente > 100);
+console.log(listaNumeri);
 
-    control = isInArray(bombe, numeroUtente);
-    controlloDuplicati = isInArray(listaNumeri, numeroUtente);
+document.getElementById("campo").addEventListener('click',
+    function(e) { // e = event 
+        let element = document.querySelectorAll("[data-cella='" + e.target.dataset.cella + "']");
+        ricercaBomba = isInArray(bombe, e.target.dataset.cella);
 
-    if(controlloDuplicati == true){
-        alert('Numero già inserito! Riprova.');
-    }else if(control == false){
-        listaNumeri.push(numeroUtente);
-    }else{
-        alert("BOOOM! Hai colpito una bomba, la tua partita è terminata. Hai totalizzato un punteggio di " + listaNumeri.length);
+        if (ricercaBomba == false){
+            element[0].classList.add("green");
+            element[0].innerHTML = '<i class="fas fa-seedling"></i>';
+        }else if (ricercaBomba == true){
+            element[0].classList.add("red");
+            alert("BOOOM! Hai colpito una bomba, la tua partita è terminata.");
+            element[0].innerHTML = '<i class="fas fa-bomb"></i>';
+        }
     }
-    i++;
-}
+)
 
 if(listaNumeri.length == range){
     alert("COMPLIMENTI! HAI VINTO!!!");
 }
 
-console.log(listaNumeri);
+creaCampo(maxNumber);
+
 // funzione che genera numeri randomici delle bombe senza ripetizioni
 function numbersRandom(min, max){
     return risultato = Math.floor(Math.random() * max - min + 1) + min; 
@@ -60,3 +61,17 @@ function isInArray(array, element) {
     }
     return result;
 }
+
+function creaCampo(celle){
+    for(i = 0; i < celle; i++){
+        let cella = `
+            <div data-cella="${i+1}" class="cella"></div>
+        `;
+
+        let templateCella = document.createElement("DIV");
+        templateCella.classList.add("casella");
+        templateCella.innerHTML = cella;
+        document.getElementById("campo").appendChild(templateCella);
+    } 
+}
+
